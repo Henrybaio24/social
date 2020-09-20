@@ -1,0 +1,24 @@
+
+<h3 class="font-weight-bold"> Galeria de Imagenes</h3>
+<hr>
+<div class="row">
+  <div class="col-md-3 mt-2"  *ngFor="let foto of fotos" (click)="mostrarFoto(foto._id)">
+    <div class="card" style="cursor: pointer; " >
+      <img [src]="foto.ruta" alt="" class="card-img-top" style="width: 253px; height: 200px;" >
+
+      <div class="card-body">
+        <h4 class="d-flex justify-content-start">{{foto.nombre}}</h4>
+        <hr>
+        <div class="float-right">
+          <i class="fa fa-heart fa-lg"></i> {{foto.likes}}
+          <i class="fa fa-eye ml-3"></i> {{foto.views}}
+        </div>
+      </div>
+
+    </div>
+    <br>
+    <br>
+  </div>
+  <br>
+</div>
+

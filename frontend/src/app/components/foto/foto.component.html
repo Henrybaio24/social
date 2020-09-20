@@ -1,0 +1,123 @@
+<div class="row" *ngIf="loading">
+  <div class="col">
+    <div class="d-flex justify-content-center align-items-center">
+      <i class="fa fa-5x fa-spin fa-spinner"></i>
+
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row justify-content-between">
+    <div class="col-4">
+      <h3 class="font-weight-bold">Acerca de {{foto.nombre}}</h3>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!loading">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 mt-3 mb-4">
+        <div class="card" style="width: 35rem;">
+          <a class="fancybox" rel="group" [href]="foto.ruta">
+            <img [src]="foto.ruta" class="card-img" alt="..." style="width: 560px; height: 320px;">
+          </a>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-8 ">
+                <h3 class="card-title">{{foto.nombre}}</h3>
+                <p class="card-text">{{foto.descripcion}}</p>
+                <p >Subida por <a [routerLink]="['/perfil', user._id]" routerLinkActive="router-link-active" >{{user.name}} {{user.surname}}</a></p>
+                <p class="card-text"><small class="text-muted"><i class="fa fa-clock"></i> {{foto.timestamp | date:'dd/MM/yyyy h:mm a'}}</small></p>
+              </div>
+  
+              <div class="col-lg-4 ">
+                <i class="fa fa-heart" (click)="likes(foto._id)" style="cursor: pointer" [style.color]="Liked ? 'red' : 'black'"></i>  {{foto.likes}}
+                <i class="fa fa-eye ml-3"></i>  {{foto.views}}
+              </div>
+            </div>   
+          </div>
+        
+          
+          
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="card mt-3" style="width: 35rem;  position: relative; left: 20px; ">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-lg-8">
+                <h3 class="font-weight-bold">Comentarios</h3>
+              </div>
+              <div class="col-lg-4">
+                <a class="btn btn-info" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><i class="fa fa-comment"></i> Comentar</a>
+              </div>
+            </div>
+           
+            
+          </div>
+          <div class="card-body">
+            <div class="collapse mt-2" id="collapseExample"  >
+              <div class="card card-body">
+                <form #form="ngForm">
+                    <textarea class="form-control" name="comentario" [(ngModel)]="comentario.comentario" id="" cols="30" rows="5" required></textarea>
+                    <br>
+                    <button class="btn btn-primary" [disabled]="form.invalid" (click)="publicar()" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Publicar</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          
+            <li class="list-group-item" style="width: 500px; position: relative; left: 28px; "  *ngFor="let comment of comentarios">
+                <div class="row">
+                    <a href="#" class="col-2"><img src="http://gravatar.com/avatar/{{comment.gravatar}}?d=monsterid&s=45" alt=""></a>
+
+                    <blockquote class="col">
+                        <p class="lead">{{comment.comentario}}</p>
+                    
+                        <footer>
+                            <span class="tiempo">{{comment.timestamp | date:'dd/MM/yyyy h:mm a'}}</span>
+                        </footer>
+
+                        <p class="blockquote-footer" *ngIf="comment.modificado">Modificado</p>
+                    
+                        <button class="btn btn-danger btn-sm" (click)="deleteComment(comment._id)"
+                        *ngIf="foto.userId === IdUserSesion || comment.user_id === IdUserSesion">Eliminar</button>
+                        <button class="btn btn-warning ml-2 btn-sm" data-toggle="modal" data-target="#exampleModal" (click)="preEditComment(comment._id)" 
+                        *ngIf="comment.user_id === IdUserSesion">Editar</button>
+                    </blockquote>
+                </div>
+            </li>
+            <br>
+            
+
+        </div>
+      </div>
+    </div>
+  </div>
+    
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Editar Comentarios</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form #editform="ngForm">
+              <textarea class="form-control" name="comentario" [(ngModel)]="comentarioParaEditar.comentario" id="" cols="30" rows="5" required></textarea>
+          </form>
+          </div>
+          <div class="modal-footer">
+           
+            <button type="button" class="btn btn-primary" (click)="EditComment()" data-dismiss="modal"><i class="fa fa-save"></i> Guardar Cambios</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

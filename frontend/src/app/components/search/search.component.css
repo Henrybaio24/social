@@ -1,0 +1,15 @@
+.imgPerfil {
+    width:150px;
+    height:150px;
+    border-radius:30px;
+    border:1px solid #666;
+}
+
+.sinborder {
+    border: 0;
+}
+
+
+
+
+

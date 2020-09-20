@@ -1,0 +1,11 @@
+.imgPerfil {
+    width:200px;
+    height:200px;
+    border-radius:150px;
+    border:1px solid #666;
+}
+
+span {
+    padding: 8px;
+    font-size: 15px;
+}

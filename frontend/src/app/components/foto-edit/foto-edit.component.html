@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="row justify-content-between">
+    <div class="col-4">
+      <h3 class="font-weight-bold">Editar Imagen</h3>
+    </div>
+  </div>
+</div>
+<hr>
+
+<div class="row justify-content-center">
+  <div class="col-md-6">
+      <div class="mt-2 mb-4">
+        <img [src]="foto.ruta" class="card-img-top" alt="">
+      </div>
+  </div>
+  
+    <div class="col-md-6">
+      <div class="card-body mb-4">
+        <form (ngSubmit)="actualizarFoto()" #form="ngForm">
+          <div class="form-group">
+            <label for=""><b>Nombre</b></label>
+            <input type="text" class="form-control" name="nombre" [value]="foto.nombre" [(ngModel)]="foto.nombre" required>
+          </div>
+    
+          <div class="form-group">
+              <label for=""><b>Álbum</b></label>
+              <select name="albumId" id="" class="form-control" [(ngModel)]="foto.albumId">
+                <option [value]="album._id" *ngFor="let album of albumes">{{album.nombre}}</option>
+              </select>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input type="checkbox" name="publico" id="" class="form-check-input" [(ngModel)]="foto.publico">
+            <label for="" class="form-check-label">Público</label>
+          </div>
+    
+          <div class="form-group mt-2">
+            <label for=""><b>Descripción</b></label>
+            <textarea name="descripcion" id="" cols="30" rows="5" class="form-control" [(ngModel)]="foto.descripcion">{{foto.descripcion}}</textarea>
+          </div>
+          <div class="float-right">
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid"><i class="fa fa-save"></i> Guardar Cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
+      
+</div>

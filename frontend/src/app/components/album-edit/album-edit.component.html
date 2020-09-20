@@ -1,0 +1,32 @@
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="card sombra mt-3">
+      <div class="card-header">
+        <h3 class="font-weight-bold">Editar Álbum</h3>
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="updateAlbum()" #form="ngForm">
+          <div class="form-group">
+            <label for="">Nombre</label>
+            <input type="text" class="form-control" name="nombre" [value]="album.nombre" [(ngModel)]="album.nombre"
+              required>
+          </div>
+
+          <div class="form-group">
+            <label for="">Descripcion</label>
+            <textarea name="descripcion" id="" cols="30" rows="6" class="form-control"
+              [(ngModel)]="album.description">{{album.description}}</textarea>
+          </div>
+          <div class="float-left">
+            <button class="btn btn-info" ><i class="fas fa-arrow-left"></i> Regresar</button>
+          </div>
+
+          <button type="submit" class="btn btn-primary float-right" [disabled]="form.invalid"><i
+              class="fa fa-save"></i> Guardar
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>

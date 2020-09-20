@@ -1,0 +1,244 @@
+<div class="alert alert-warning" role="alert" *ngIf="error">
+  Contraseña actual incorrecta, reintentelo de nuevo
+</div>
+
+<div class="alert alert-success alert-dismissible fade show" role="alert" *ngIf="success">
+  Contraseña cambiada con exito!!!.
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="conatiner" >
+    <div class="row"  > 
+      <!-- Datos Perfil -->
+      <div class="col-lg-4 mt-3">
+        <div class="card" style="border-radius: 5%;" >
+          <div class="card-header " style="border-radius: 5%;">
+            <img src="http://gravatar.com/avatar/{{user.gravatar}}?d=monsterid&s=200" style="position: relative; left: 20%;" class="imgPerfil" alt="">
+          </div>
+          <br>
+          <div class="card-block text-center"  >
+            
+            <h5> Acerca de </h5>
+            
+            <h3>{{user.name}} {{user.surname}}</h3>
+            <span class="badge badge-pill badge-info">{{user.seguidores}} Seguidores</span>
+  
+            <p class="mt-2"> {{user.acerca}}</p>
+          </div>
+          
+          <div class="card-footer align-items-center " >
+            <button class="btn btn-primary ml-3" title="Cambiar contraseña" data-toggle="modal" 
+                    data-target="#exampleModal" *ngIf="user._id === idUserAuth">
+                    <i class="fas fa-unlock-alt"></i>
+            </button>
+            <button class="btn btn-primary ml-3" title="Editar Usuario" data-toggle="modal"
+                    data-target="#exampleModal2" *ngIf="user._id === idUserAuth">
+                    <i class="fas fa-pencil-alt"></i>
+            </button>
+            <button class="btn btn-primary ml-3" title="Ver Fotos" (click)="verFotos()">
+                    <i class="fas fa-images"></i>
+            </button>
+            <a class="btn btn-primary ml-3"  title="Seguidores" [routerLink]="['/seguidores']" routerLinkActive="router-link-active">
+              <i class="fas fa-users"></i>
+            </a>
+            <button class="btn btn-primary ml-3" title="Seguir a {{user.name}} {{user.surname}}" *ngIf="idUserAuth !== user._id && !siguiendo" 
+                    (click)="seguir()"> <i class="fas fa-user-check"></i>  
+            </button>
+            <button class="btn btn-primary ml-3" title="Dejar de seguir a {{user.name}} {{user.surname}}" *ngIf="idUserAuth !== user._id && siguiendo" 
+                    (click)="dejarDeSeguir()"> <i class="fas fa-user-alt-slash"></i>  
+            </button>
+            <button class="btn btn-primary ml-3" title="Cambiar Imagen de Perfil">
+              <i class="fas fa-upload"></i>
+            </button>
+          </div>
+      </div>
+    </div>
+    <!-- Datos Perfil -->
+
+    <!-- Galeria con mas  Likes -->
+    <div class="col-lg-8">
+      <div class="card-body">
+        <h3 class="font-weight-bold">Imagenes más populares</h3>
+        <hr>
+    
+        <div class="row" *ngIf="loading">
+            <div class="col">
+              <div class="d-flex justify-content-center align-items-center">
+                <i class="fa fa-5x fa-spin fa-spinner"></i>
+          
+              </div>
+            </div>
+          </div>
+    
+        <div *ngIf="fotosTop5Views.length == 0 && !loading">
+          <h3 class="text-center">No tienes ninguna Imagen subida</h3>
+        </div>
+    
+        <div class="row">
+          <div class="col-md-6 col-lg-4" *ngFor="let foto of fotosPopulares">
+            <div class="card" (click)="verImagen(foto._id)" style="cursor: pointer">
+              <img [src]="foto.ruta" alt="" class="card-img-top" style="width: 208px; height: 250px;">
+        
+              <div class="card-body">
+                <h4>{{foto.nombre}}</h4>
+                <hr>
+                <div class="float-right">
+                  <i class="fa fa-heart fa-lg"></i> {{foto.likes}}
+                  <i class="fa fa-eye ml-3"></i> {{foto.views}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+    </div>
+    <!-- Galeria de los mas vistos -->
+
+
+
+  </div>
+</div>
+<br>
+
+
+<!-- Galeria de las populares -->
+
+<div class="card mt-4 mb-5">
+  <div class="card-body mb-2">
+    <h3 class="font-weight-bold mb-3">Imagenes más Vistas </h3> 
+      
+    <hr>
+
+    <div class="row" *ngIf="loading">
+      <div class="col">
+        <div class="d-flex justify-content-center align-items-center">
+          <i class="fa fa-5x fa-spin fa-spinner"></i>
+    
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="fotosTop5Views.length == 0 && !loading">
+      <h3 class="text-center">No tienes ninguna Imagen subida</h3>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 col-lg-4" *ngFor="let foto of fotosTop5Views">
+        <div class="card" (click)="verImagen(foto._id)" style="cursor: pointer">
+          <img [src]="foto.ruta" alt="" class="card-img-top" style="width: 335px; height: 250px;">
+    
+          <div class="card-body">
+            <h4>{{foto.nombre}}</h4>
+            <hr>
+            <div class="float-right">
+              <i class="fa fa-heart fa-lg"></i> {{foto.likes}}
+              <i class="fa fa-eye ml-3"></i> {{foto.views}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Galeria de las populares -->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content text-white">
+      <div class="modal-header ">
+        <h5 class="modal-title" style="color: black;" id="exampleModalLabel">Cambio de contraseña</h5>
+        <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form #form="ngForm">
+      <div class="modal-body ">
+          <div class="form-group">
+            <label for="" style="color:rgb(114, 110, 110);">Contraseña Actual</label>
+            <input type="password" 
+            class="form-control" 
+            name="CurrentPassword"
+            [(ngModel)]="password.CurrentPassword" 
+            #currentPassword="ngModel" 
+            [ngClass]="{'is-invalid': currentPassword.invalid && currentPassword.touched}"
+            required>
+          </div>
+
+          <div class="form-group">
+              <label for="" style="color:rgb(114, 110, 110);">Contraseña Nueva</label>
+              <input type="password"
+               class="form-control"
+                name="newPassword" 
+                [(ngModel)]="password.newPassword" 
+                #newPassword="ngModel" 
+                [ngClass]="{'is-invalid': newPassword.invalid && newPassword.touched}"
+                required>
+            </div>
+          </div>
+          <div class="modal-footer ">
+            
+            <button type="submit" class="btn btn-primary" data-dismiss="modal" [disabled]="form.invalid" (click)="updatePassword()"><i class="fa fa-save"></i> Guardar</button>
+          </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content text-white">
+      <div class="modal-header ">
+        <h5 class="modal-title" style="color:black;"  id="exampleModalLabel2">Editar datos del usuario</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form #formUser="ngForm">
+        <div class="modal-body ">
+          <div class="form-group">
+            <label for="" style="color:rgb(114, 110, 110);" >Nombre</label>
+            <input type="input" class="form-control" name="name" [(ngModel)]="userModif.name" #name="ngModel"
+              [ngClass]="{'is-invalid': name.invalid && name.touched}" required>
+          </div>
+      
+          <div class="form-group">
+            <label for="" style="color:rgb(114, 110, 110);">Apellido</label>
+            <input type="input" class="form-control" name="surname" [(ngModel)]="userModif.surname" #surname="ngModel"
+              [ngClass]="{'is-invalid': surname.invalid && surname.touched}" required>
+          </div>
+
+          <div class="form-group">
+            <label for="" style="color:rgb(114, 110, 110);">Acerca de</label>
+            <input type="input" class="form-control" name="acerca" [(ngModel)]="userModif.acerca" #acerca="ngModel"
+              [ngClass]="{'is-invalid': acerca.invalid && acerca.touched}" required>
+          </div>
+      
+          <div class="form-group">
+            <label for="" style="color:rgb(114, 110, 110);" >Correo</label>
+            <input type="input" class="form-control" name="mail" [(ngModel)]="userModif.mail" #mail="ngModel" [ngClass]="{'is-invalid': mail.invalid && mail.touched}"
+              required>
+          </div>
+        </div>
+        <div class="modal-footer ">
+         
+          <button type="submit" class="btn btn-primary" data-dismiss="modal" [disabled]="formUser.invalid" (click)="updateUser()"><i
+              class="fa fa-save"></i> Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
